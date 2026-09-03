@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brain and Mind Academy | Calculus I: The Limit (Intuitive & Graphical Foundations)</title>
+  
+  <!-- MathJax Configuration for Clean Mathematical Typesetting -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Desmos API for Interactive Graphing -->
+  <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+  <style>
+    :root {
+      --primary-blue: #0284c7;
+      --primary-dark: #0c4a6e;
+      --accent-blue: #0ea5e9;
+      --light-blue-bg: #f0f9ff;
+      --light-blue-subtle: #f8fafc;
+      --blue-border: #7dd3fc;
+      --blue-border-soft: #bae6fd;
+      --card-white: #ffffff;
+      --correct-green: #059669;
+      --correct-green-light: #d1fae5;
+      --incorrect-red: #dc2626;
+      --incorrect-red-light: #fee2e2;
+      --accent-gold: #d97706;
+      --accent-gold-light: #fef3c7;
+      --skipped-amber: #f59e0b;
+      --skipped-amber-light: #fffbeb;
+      --unvisited-gray: #94a3b8;
+      --unvisited-light: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(2, 132, 199, 0.08);
+      --shadow-md: 0 4px 8px -1px rgba(2, 132, 199, 0.12), 0 2px 4px -2px rgba(2, 132, 199, 0.06);
+      --shadow-lg: 0 12px 24px -4px rgba(12, 74, 110, 0.15), 0 4px 8px -2px rgba(12, 74, 110, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 320px, #f0f9ff 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 60%, var(--accent-blue) 100%);
+      color: #ffffff; padding: 1.1rem 1.75rem; box-shadow: var(--shadow-md); position: sticky; top: 0; z-index: 100;
+    }
+    .header-container {
+      max-width: 1440px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .brand-group { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 44px; height: 44px; background: #ffffff;
+      border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--primary-blue); font-size: 1.45rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .brand-title h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-title p { font-size: 0.82rem; color: #bae6fd; }
+    .nav-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff; padding: 7px 15px; border-radius: 20px; cursor: pointer; font-size: 0.86rem; font-weight: 600; transition: all 0.2s;
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: #ffffff; color: var(--primary-blue); box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .user-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .user-badge {
+      background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; color: #f1f5f9; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.22); border: none; color: #ffffff; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;
+    }
+    .btn-icon:hover { background: rgba(255, 255, 255, 0.35); }
+
+    main { max-width: 1440px; width: 100%; margin: 1.5rem auto; padding: 0 1rem; flex: 1; }
+    .view-section { display: none; }
+    .view-section.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Login Portal Card */
+    .card-center { max-width: 620px; margin: 3.5rem auto; background: var(--card-white); border-radius: var(--radius-lg); padding: 2.75rem; box-shadow: var(--shadow-lg); border: 2px solid var(--blue-border-soft); text-align: center; }
+    .login-icon { width: 72px; height: 72px; background: #f0f9ff; color: var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; font-size: 2.2rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); border: 2px solid var(--blue-border); }
+    .form-group { text-align: left; margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; color: var(--primary-dark); }
+    .form-control { width: 100%; padding: 13px; border: 1.5px solid var(--blue-border-soft); border-radius: var(--radius-sm); font-size: 1rem; outline: none; transition: border-color 0.2s; background: #fafcff; }
+    .form-control:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); background: #ffffff; }
+    .btn-primary { width: 100%; background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue)); color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1.02rem; border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35); transition: all 0.2s ease; }
+    .btn-primary:hover { box-shadow: 0 6px 14px rgba(2, 132, 199, 0.45); transform: translateY(-1px); }
+
+    /* Theory Notes Layout */
+    .notes-card { max-width: 1080px; margin: 1.5rem auto; background: var(--card-white); border-radius: var(--radius-lg); padding: 2.75rem; border: 2px solid var(--blue-border-soft); box-shadow: var(--shadow-lg); }
+    .notes-header { border-bottom: 2px solid var(--blue-border-soft); padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+    .notes-header h2 { color: var(--primary-dark); font-size: 1.7rem; }
+    .notes-body h3 { color: var(--primary-blue); margin: 1.8rem 0 0.6rem 0; font-size: 1.25rem; border-bottom: 1.5px solid var(--blue-border-soft); padding-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .notes-body p, .notes-body ul, .notes-body ol { color: var(--text-main); font-size: 1.02rem; line-height: 1.8; margin-bottom: 1rem; }
+    .notes-body ul, .notes-body ol { padding-left: 1.6rem; }
+    .formula-callout { background: #f0f9ff; border: 1px solid var(--blue-border-soft); border-left: 4px solid var(--primary-blue); padding: 14px 18px; border-radius: var(--radius-sm); margin: 14px 0; font-size: 1.05rem; }
+    .notes-confirm-box { background: #f0f9ff; border: 2px solid var(--blue-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .desmos-container { width: 100%; height: 380px; border-radius: var(--radius-md); border: 2px solid var(--blue-border); margin: 14px 0; box-shadow: var(--shadow-sm); }
+
+    /* Table Styling for Numerical Limits */
+    .table-responsive { overflow-x: auto; margin: 1rem 0; }
+    .limit-table {
+      width: 100%; border-collapse: collapse; text-align: center; background: #ffffff; border: 1px solid var(--blue-border);
+    }
+    .limit-table th, .limit-table td {
+      border: 1px solid var(--blue-border-soft); padding: 9px 12px; font-size: 0.95rem;
+    }
+    .limit-table th { background: #e0f2fe; color: var(--primary-dark); font-weight: 700; }
+
+    /* Learning Workspace Grid */
+    .learning-grid-layout { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; align-items: start; }
+    @media (max-width: 1080px) { .learning-grid-layout { grid-template-columns: 1fr; } }
+    
+    .problem-card { background: var(--card-white); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md); border: 2px solid var(--blue-border-soft); }
+    .problem-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1.5px solid var(--blue-border-soft); }
+    .p-tag { font-size: 1.15rem; font-weight: 800; color: var(--primary-blue); }
+    .category-badge { background: #e0f2fe; color: var(--primary-dark); font-weight: 700; font-size: 0.8rem; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--blue-border); margin-left: 8px; }
+    .parts-badge { background: var(--accent-gold-light); color: var(--accent-gold); font-weight: 700; font-size: 0.8rem; padding: 3px 9px; border-radius: 6px; border: 1px solid #fde68a; margin-left: 6px; }
+    .status-badge { font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; }
+    .badge-unvisited { background: var(--unvisited-light); color: var(--unvisited-gray); border: 1px solid #cbd5e1; }
+    .badge-progress { background: #dbeafe; color: #1e40af; }
+    .badge-complete { background: var(--correct-green-light); color: var(--correct-green); }
+    .badge-skipped { background: var(--skipped-amber-light); color: var(--skipped-amber); }
+
+    .problem-context { font-size: 1.15rem; font-weight: 500; margin-bottom: 1.25rem; background: #f0f9ff; border-left: 4px solid var(--accent-blue); padding: 16px 20px; border-radius: var(--radius-sm); line-height: 2.2; border: 1px solid var(--blue-border-soft); border-left-width: 4px; }
+
+    /* SVG Diagram Container */
+    .diagram-container {
+      display: flex; justify-content: center; align-items: center; background: #ffffff;
+      border: 1.5px solid var(--blue-border-soft); border-radius: var(--radius-md); padding: 1rem; margin: 1rem 0 1.5rem 0;
+      box-shadow: inset 0 0 8px rgba(2, 132, 199, 0.04);
+    }
+    .diagram-svg { max-width: 440px; width: 100%; height: auto; }
+
+    /* Step Cards */
+    .steps-container { display: flex; flex-direction: column; gap: 1.25rem; }
+    .step-card { border: 2px solid var(--blue-border-soft); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; background: #ffffff; transition: all 0.25s ease-in-out; animation: slideDown 0.3s ease-out; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .step-card.active { border-color: var(--accent-blue); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
+    .step-card.completed { border-color: var(--correct-green); background: #fcfdfc; }
+    
+    .step-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .step-title-text { font-weight: 700; font-size: 1rem; color: var(--primary-dark); }
+    .step-status-indicator { font-size: 0.8rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+    .step-card.completed .step-status-indicator { background: var(--correct-green-light); color: var(--correct-green); }
+    .step-card.active .step-status-indicator { background: #e0f2fe; color: var(--primary-dark); }
+
+    .step-prompt { font-size: 1.05rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-main); line-height: 2.4; }
+
+    /* Step Inputs */
+    .step-input {
+      display: inline-block; width: 170px; padding: 7px 11px; font-size: 1.05rem; font-weight: 700; font-family: 'Segoe UI', monospace;
+      text-align: center; color: var(--primary-blue); background: #ffffff; border: 2px solid #7dd3fc; border-radius: var(--radius-sm); outline: none; margin: 0 4px; vertical-align: middle;
+    }
+    .step-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); }
+    .step-input.input-correct { border-color: var(--correct-green) !important; background: var(--correct-green-light) !important; color: #065f46 !important; }
+    .step-input.input-incorrect { border-color: var(--incorrect-red) !important; background: var(--incorrect-red-light) !important; color: #991b1b !important; }
+
+    .step-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--blue-border-soft); }
+    .step-feedback-msg { font-size: 0.88rem; font-weight: 600; }
+    .step-feedback-msg.correct { color: #166534; }
+    .step-feedback-msg.incorrect { color: #b91c1c; }
+
+    /* Tools Panel */
+    .tools-panel {
+      background: #f0f9ff; border: 1.5px solid var(--blue-border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;
+    }
+    .tool-tab-header {
+      display: flex; gap: 8px; border-bottom: 1.5px solid var(--blue-border-soft); padding-bottom: 8px; margin-bottom: 12px;
+    }
+    .tool-tab-btn {
+      background: none; border: none; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 4px;
+    }
+    .tool-tab-btn.active { color: var(--primary-blue); background: #e0f2fe; }
+    .math-pad-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .math-pad-btn {
+      background: #ffffff; border: 1px solid var(--blue-border); padding: 8px 4px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; cursor: pointer; text-align: center; color: var(--primary-dark);
+    }
+    .math-pad-btn:hover { background: var(--primary-blue); color: #ffffff; }
+
+    /* Calculator View */
+    .calc-box { background: #ffffff; border: 1.5px solid var(--blue-border); border-radius: var(--radius-sm); padding: 10px; }
+    .calc-screen { width: 100%; background: #0c4a6e; color: #7dd3fc; font-family: monospace; font-size: 1.1rem; padding: 10px; border-radius: 4px; text-align: right; margin-bottom: 8px; overflow-x: auto; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .calc-btn { background: #f0f9ff; border: 1px solid var(--blue-border-soft); padding: 8px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: center; color: var(--primary-dark); }
+    .calc-btn:hover { background: #e0f2fe; }
+    .calc-btn.op { background: #bae6fd; color: #0c4a6e; }
+    .calc-btn.eq { background: var(--primary-blue); color: #fff; }
+
+    /* Palette Sidebar */
+    .palette-card { background: var(--card-white); border-radius: var(--radius-lg); padding: 1.25rem; border: 2px solid var(--blue-border-soft); position: sticky; top: 90px; box-shadow: var(--shadow-md); }
+    .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 1rem 0; max-height: 320px; overflow-y: auto; padding-right: 4px; }
+    .palette-btn { aspect-ratio: 1; border-radius: var(--radius-sm); border: 1.5px solid var(--blue-border-soft); background: var(--unvisited-light); color: var(--text-muted); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .palette-btn.active { border: 2.5px solid var(--primary-blue) !important; background: #e0f2fe !important; color: var(--primary-blue) !important; }
+    .palette-btn.completed { background: var(--correct-green) !important; color: #ffffff !important; border-color: var(--correct-green) !important; }
+    .palette-btn.progress { background: #93c5fd !important; border-color: #3b82f6 !important; color: #0f172a !important; }
+    .palette-btn.skipped { background: var(--skipped-amber) !important; color: #ffffff !important; border-color: var(--skipped-amber) !important; }
+    .palette-legend { border-top: 1.5px solid var(--blue-border-soft); padding-top: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.75rem; }
+    .legend-item { display: flex; align-items: center; gap: 4px; color: var(--text-muted); }
+    .legend-color { width: 10px; height: 10px; border-radius: 2px; }
+
+    .problem-action-bar { display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; border-top: 1.5px solid var(--blue-border-soft); margin-top: 1.5rem; flex-wrap: wrap; gap: 10px; }
+    .btn { padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.92rem; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .btn-step-check { background: var(--primary-blue); color: #ffffff; }
+    .btn-step-back { background: #f0f9ff; color: var(--primary-dark); border: 1px solid var(--blue-border); }
+    .btn-secondary { background: #e2e8f0; color: var(--text-main); }
+    .btn-skip { background: #ffffff; color: var(--skipped-amber); border: 1.5px solid var(--skipped-amber); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .score-hero-card { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 60%, var(--accent-blue) 100%); color: #ffffff; border-radius: var(--radius-lg); padding: 2.5rem 2rem; text-align: center; margin-bottom: 2rem; box-shadow: var(--shadow-lg); }
+    .score-circle { width: 115px; height: 115px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 4px solid #7dd3fc; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1rem auto; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; max-width: 600px; margin: 1.5rem auto 0 auto; }
+    .stat-pill { background: rgba(255,255,255,0.12); padding: 10px; border-radius: var(--radius-md); }
+    .review-card { background: #ffffff; border: 2px solid var(--blue-border-soft); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); line-height: 2.2; }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(12, 74, 110, 0.65); backdrop-filter: blur(3px); z-index: 999; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #ffffff; max-width: 480px; width: 100%; border-radius: var(--radius-lg); padding: 2rem; text-align: center; border: 2px solid var(--blue-border); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-logo">lim</div>
+        <div class="brand-title">
+          <h1>Brain and Mind Academy</h1>
+          <p>Calculus I • The Limit: Intuitive, Numerical & Graphical Practice</p>
+        </div>
+      </div>
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchMainTab('theory')">📖 Notes & Theory</button>
+        <button class="tab-btn" onclick="switchMainTab('sheet')">✍️ Practice Quiz (14 Problems)</button>
+        <button class="tab-btn" onclick="switchMainTab('graphLab')">🎨 Desmos Lab</button>
+        <button class="tab-btn" onclick="switchMainTab('solutions')">📋 Complete Solutions</button>
+      </div>
+      <div class="user-actions">
+        <div class="user-badge"><span id="userEmailSpan">Student</span></div>
+        <button class="btn-icon" id="soundToggleBtn"><span id="soundIcon">🔊</span></button>
+        <button class="btn-icon" id="switchUserBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+    <!-- 1. Authentication Portal -->
+    <section id="loginView" class="view-section active">
+      <div class="card-center">
+        <div class="login-icon">lim</div>
+        <h2>Calculus I: The Limit Interactive Sheet</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Interactive concept workbook covering numerical estimation via tables of values, one-sided limits, graphical analysis, piecewise continuity, and parameter determination.</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="studentEmail">Student Name or ID</label>
+            <input type="text" id="studentEmail" class="form-control" placeholder="Enter your name or ID (e.g., Alex)" required autocomplete="name" />
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="submit" class="btn-primary" id="startWithTheoryBtn">Review Core Theory & Concepts →</button>
+            <button type="button" class="btn" id="startDirectQuizBtn" style="background: #f0f9ff; color: var(--primary-blue); border: 2px solid var(--blue-border); font-weight: 700; padding: 12px; border-radius: var(--radius-sm); cursor: pointer;">
+              ⚡ Jump Directly to Practice Questions (14 Problems)
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 2. Notes & Theory Hub -->
+    <section id="notesView" class="view-section">
+      <div class="notes-card">
+        <div class="notes-header">
+          <span style="display:inline-block; padding: 4px 10px; background: var(--accent-gold-light); color: var(--accent-gold); font-weight: 700; font-size: 0.75rem; border-radius: 12px; text-transform: uppercase; margin-bottom: 6px;">
+            Calculus I Reference Guide
+          </span>
+          <h2>The Limit: Foundations, Tables & Graphical Behavior</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Review the intuitive concept of limits, one-sided limits, and reasons a limit may fail to exist before starting the quiz.</p>
+        </div>
+
+        <div class="notes-body">
+          <h3>1. The Intuitive Definition of a Limit</h3>
+          <div class="formula-callout">
+            Suppose \( f(x) \) is defined when \( x \) is near the number \( a \) (except possibly at \( a \) itself). We write:
+            \[ \lim_{x \to a} f(x) = L \]
+            and say <em>"the limit of \( f(x) \) as \( x \) approaches \( a \) equals \( L \)"</em> if we can make the values of \( f(x) \) arbitrarily close to \( L \) by taking \( x \) to be sufficiently close to \( a \) from both sides, but not equal to \( a \).
+          </div>
+
+          <h3>2. Function Value vs. Limit Value</h3>
+          <p>The limit only cares about what happens <strong>near</strong> \( x = a \), never what happens <strong>at</strong> \( x = a \). The actual function value \( f(a) \) can be completely different from \( \lim_{x \to a} f(x) \), or it can even be undefined.</p>
+
+          <h3>3. One-Sided Limits & The Existence Criterion</h3>
+          <ul>
+            <li><strong>Left-Hand Limit:</strong> \( \lim_{x \to a^-} f(x) = L_1 \) means \( x \) approaches \( a \) from values strictly less than \( a \).</li>
+            <li><strong>Right-Hand Limit:</strong> \( \lim_{x \to a^+} f(x) = L_2 \) means \( x \) approaches \( a \) from values strictly greater than \( a \).</li>
+            <li><strong>Existence Theorem:</strong> The two-sided limit \( \lim_{x \to a} f(x) = L \) exists if and only if both one-sided limits exist and are equal to the same real number:
+              \[ \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = L \]
+            </li>
+          </ul>
+
+          <h3>4. When Does a Limit Fail to Exist (DNE)?</h3>
+          <ol>
+            <li><strong>Jump Discontinuity:</strong> The left and right limits approach different finite numbers (\( \lim_{x \to a^-} f(x) \neq \lim_{x \to a^+} f(x) \)).</li>
+            <li><strong>Vertical Asymptote (Infinite Discontinuity):</strong> The function increases or decreases without bound (\( \pm\infty \)) near \( x = a \).</li>
+            <li><strong>Oscillating Behavior:</strong> The function values oscillate infinitely between bounds as \( x \to a \) (e.g. \( \sin(1/x) \)).</li>
+          </ol>
+        </div>
+
+        <div class="notes-confirm-box">
+          <div>
+            <strong>Ready to practice the 14 problems step-by-step?</strong>
+            <p style="font-size: 0.9rem; color: var(--primary-dark); margin-top:2px;">Complete all numerical tables, graphical evaluations, and piecewise limit problems.</p>
+          </div>
+          <button class="btn btn-primary" id="confirmNotesReadBtn" style="width: auto; padding: 12px 24px;">
+            Start 14-Problem Interactive Worksheet →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Dynamic Guided Learning Workspace -->
+    <section id="sheetView" class="view-section">
+      <div class="learning-grid-layout">
+        
+        <!-- Left Side: Active Problem & Step Sequence -->
+        <div class="problem-card">
+          <div class="problem-header">
+            <div>
+              <span class="p-tag" id="pNumberDisplay">Problem 1</span>
+              <span class="category-badge" id="pCategoryBadge">Numerical Limit</span>
+              <span class="parts-badge" id="pPartsBadge">Step-by-Step</span>
+            </div>
+            <div class="status-badge badge-unvisited" id="pStatusBadge">Unvisited</div>
+          </div>
+          
+          <div class="problem-context" id="pContextDisplay"></div>
+
+          <!-- Dynamic SVG Vector Graphical Diagram -->
+          <div id="diagramDisplayContainer" class="diagram-container" style="display:none;"></div>
+
+          <!-- On-Screen Mathematical Keypad & Scientific Calculator -->
+          <div class="tools-panel">
+            <div class="tool-tab-header">
+              <button class="tool-tab-btn active" id="tabPadBtn" onclick="switchToolTab('pad')">⌨️ Mathematical Keypad</button>
+              <button class="tool-tab-btn" id="tabCalcBtn" onclick="switchToolTab('calc')">🧮 Interactive Calculator</button>
+            </div>
+            
+            <div id="mathPadView">
+              <div class="math-pad-grid">
+                <button class="math-pad-btn" onclick="insertSymbol('x')">x</button>
+                <button class="math-pad-btn" onclick="insertSymbol('k')">k</button>
+                <button class="math-pad-btn" onclick="insertSymbol('/')">/</button>
+                <button class="math-pad-btn" onclick="insertSymbol('-')">-</button>
+                <button class="math-pad-btn" onclick="insertSymbol('+')">+</button>
+                <button class="math-pad-btn" onclick="insertSymbol('(')">(</button>
+                <button class="math-pad-btn" onclick="insertSymbol(')')">)</button>
+                <button class="math-pad-btn" onclick="insertSymbol('DNE')">DNE</button>
+                <button class="math-pad-btn" onclick="insertSymbol('Undefined')">Undefined</button>
+                <button class="math-pad-btn" onclick="insertSymbol('∞')">∞</button>
+                <button class="math-pad-btn" onclick="insertSymbol('-∞')">-∞</button>
+                <button class="math-pad-btn" onclick="insertSymbol('.')">.</button>
+                <button class="math-pad-btn" onclick="insertSymbol('0')">0</button>
+                <button class="math-pad-btn" style="background:#fee2e2; color:#dc2626;" onclick="clearActiveField()">Clear</button>
+              </div>
+            </div>
+
+            <div id="calcView" style="display:none;">
+              <div class="calc-box">
+                <div class="calc-screen" id="calcScreen">0</div>
+                <div class="calc-grid">
+                  <button class="calc-btn" onclick="calcAppend('(')">(</button>
+                  <button class="calc-btn" onclick="calcAppend(')')">)</button>
+                  <button class="calc-btn" onclick="calcClear()">C</button>
+                  <button class="calc-btn op" onclick="calcAppend('/')">/</button>
+                  <button class="calc-btn" onclick="calcAppend('7')">7</button>
+                  <button class="calc-btn" onclick="calcAppend('8')">8</button>
+                  <button class="calc-btn" onclick="calcAppend('9')">9</button>
+                  <button class="calc-btn op" onclick="calcAppend('*')">*</button>
+                  <button class="calc-btn" onclick="calcAppend('4')">4</button>
+                  <button class="calc-btn" onclick="calcAppend('5')">5</button>
+                  <button class="calc-btn" onclick="calcAppend('6')">6</button>
+                  <button class="calc-btn op" onclick="calcAppend('-')">-</button>
+                  <button class="calc-btn" onclick="calcAppend('1')">1</button>
+                  <button class="calc-btn" onclick="calcAppend('2')">2</button>
+                  <button class="calc-btn" onclick="calcAppend('3')">3</button>
+                  <button class="calc-btn op" onclick="calcAppend('+')">+</button>
+                  <button class="calc-btn" onclick="calcAppend('0')">0</button>
+                  <button class="calc-btn" onclick="calcAppend('.')">.</button>
+                  <button class="calc-btn op" onclick="calcSqrt()">√</button>
+                  <button class="calc-btn eq" onclick="calcEval()">=</button>
+                </div>
+                <div style="margin-top:6px; display:flex; justify-content:flex-end;">
+                  <button class="btn btn-secondary" style="font-size:0.8rem; padding:4px 8px;" onclick="calcInsertToField()">↳ Insert Result into Input</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progressive Step Stack -->
+          <div class="steps-container" id="stepsListContainer"></div>
+
+          <!-- Problem Navigation Bar -->
+          <div class="problem-action-bar">
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary" id="prevProblemBtn">← Prev Question</button>
+              <button class="btn btn-secondary" id="nextProblemBtn">Next Question →</button>
+            </div>
+            <button class="btn btn-skip" id="skipProblemBtn">Skip Question</button>
+          </div>
+        </div>
+
+        <!-- Right Side: Sidebar Navigation Palette -->
+        <aside class="palette-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:var(--primary-dark); font-size:1.02rem;">14-Problem Index</strong>
+            <span style="font-size:0.85rem; color:var(--primary-blue); font-weight:700;" id="completionRateText">0/14 Solved</span>
+          </div>
+          <div class="palette-grid" id="paletteGridContainer"></div>
+          <div class="palette-legend">
+            <div class="legend-item"><div class="legend-color" style="background: var(--correct-green);"></div> Completed</div>
+            <div class="legend-item"><div class="legend-color" style="background: #e0f2fe;"></div> Working</div>
+            <div class="legend-item"><div class="legend-color" style="background: var(--skipped-amber);"></div> Skipped</div>
+            <div class="legend-item"><div class="legend-color" style="background: var(--unvisited-light); border:1px solid #cbd5e1;"></div> Empty</div>
+          </div>
+          <button class="btn btn-primary" id="finishAssessmentBtn" style="margin-top: 1.25rem; width: 100%;">Finish & View All Solutions</button>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- 4. Interactive Desmos Lab -->
+    <section id="graphLabView" class="view-section">
+      <div class="notes-card">
+        <h2>Interactive Limit Visualizer (Desmos Lab)</h2>
+        <p style="color:var(--text-muted); margin-bottom:1rem;">
+          Experiment with piecewise boundaries, removable holes, and asymptotes directly in this live graphing tool.
+        </p>
+        <div id="desmosLab" class="desmos-container" style="height:480px;"></div>
+      </div>
+    </section>
+
+    <!-- 5. Final Review & Solutions -->
+    <section id="solutionsView" class="view-section">
+      <div class="score-hero-card">
+        <span class="topic-pill" style="background:rgba(255,255,255,0.2); color:#bae6fd; padding:4px 10px; border-radius:12px; font-weight:700;">Performance Report</span>
+        <h2 style="margin: 0.5rem 0; font-size: 1.7rem;">The Limit Mastery Report</h2>
+        <div class="score-circle">
+          <div id="finalScoreVal" style="font-size:2rem; font-weight:800;">0</div>
+          <div style="font-size:0.8rem; color:#bae6fd;">out of 14</div>
+        </div>
+        <p id="performanceFeedbackDesc" style="color: #bae6fd; font-size:0.95rem; max-width:540px; margin:0 auto;"></p>
+        <div class="stats-row">
+          <div class="stat-pill"><div style="font-size:0.75rem; color:#bae6fd;">Accuracy</div><div id="accuracyStat" style="font-size:1.2rem; font-weight:700;">0%</div></div>
+          <div class="stat-pill"><div style="font-size:0.75rem; color:#bae6fd;">Solved</div><div id="correctCountStat" style="font-size:1.2rem; font-weight:700; color:#86efac;">0</div></div>
+          <div class="stat-pill"><div style="font-size:0.75rem; color:#bae6fd;">Skipped</div><div id="skippedCountStat" style="font-size:1.2rem; font-weight:700; color:#fde047;">0</div></div>
+        </div>
+        <div style="margin-top: 1.5rem; display:flex; justify-content:center; gap:10px;">
+          <button class="btn" style="background: rgba(255,255,255,0.25); color:#fff;" id="retakeQuizBtn">↺ Retake Quiz</button>
+          <button class="btn" style="background:#fff; color:var(--primary-dark);" onclick="window.print()">🖨️ Print Solutions</button>
+        </div>
+      </div>
+      <h3 style="color: var(--primary-dark); margin-bottom:1rem;">Complete Step-by-Step Mathematical Solutions (All 14 Problems)</h3>
+      <div id="reviewListContainer"></div>
+    </section>
+
+  </main>
+
+  <!-- Submit Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+      <h3 style="color:var(--primary-dark); margin-bottom:0.5rem;">Submit Worksheet?</h3>
+      <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.25rem;">Are you ready to submit your answers and see your complete solutions report?</p>
+      <div style="display:flex; justify-content:center; gap:10px;">
+        <button class="btn btn-secondary" id="cancelModalBtn">Continue Solving</button>
+        <button class="btn btn-primary" id="confirmSubmitModalBtn" style="width:auto;">Submit Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       SVG VECTOR GRAPH GENERATOR
+       ========================================================================== */
+    function makeGrid(xMin, xMax, yMin, yMax, width, height) {
+      const xRange = xMax - xMin;
+      const yRange = yMax - yMin;
+      const xZero = (-xMin / xRange) * width;
+      const yZero = (yMax / yRange) * height;
+
+      let xml = `
+        <rect width="${width}" height="${height}" fill="#f8fafc"/>
+        <line x1="10" y1="${yZero}" x2="${width - 10}" y2="${yZero}" stroke="#0f172a" stroke-width="2"/>
+        <line x1="${xZero}" y1="10" x2="${xZero}" y2="${height - 10}" stroke="#0f172a" stroke-width="2"/>
+        <text x="${width - 15}" y="${yZero - 8}" font-size="12" font-weight="700">x</text>
+        <text x="${xZero + 8}" y="20" font-size="12" font-weight="700">y</text>
+      `;
+
+      for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+        if (x === 0) continue;
+        const px = ((x - xMin) / xRange) * width;
+        xml += `
+          <line x1="${px}" y1="${yZero - 4}" x2="${px}" y2="${yZero + 4}" stroke="#64748b" stroke-width="1.2"/>
+          <text x="${px}" y="${yZero + 16}" font-size="10" text-anchor="middle" fill="#64748b">${x}</text>
+        `;
+      }
+      for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+        if (y === 0) continue;
+        const py = ((yMax - y) / yRange) * height;
+        xml += `
+          <line x1="${xZero - 4}" y1="${py}" x2="${xZero + 4}" stroke="#64748b" stroke-width="1.2"/>
+          <text x="${xZero - 8}" y="${py + 3}" font-size="10" text-anchor="end" fill="#64748b">${y}</text>
+        `;
+      }
+      return { xml, xZero, yZero, xRange, yRange, width, height, xMin, yMax };
+    }
+
+    // Graph for Jump Discontinuity at x = 1 (Q5)
+    function getJumpSvg() {
+      const g = makeGrid(-4, 4, -3, 4, 380, 260);
+      const toPx = (x, y) => [((x - g.xMin)/g.xRange)*g.width, ((g.yMax - y)/g.yRange)*g.height];
+      const p1 = toPx(-3, -2), p2 = toPx(1, 2);
+      const p3 = toPx(1, -1), p4 = toPx(3, 1);
+
+      return `
+        <svg class="diagram-svg" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+          ${g.xml}
+          <!-- Left branch: (-3, -2) to (1, 2) open circle -->
+          <line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#0284c7" stroke-width="2.5"/>
+          <circle cx="${p2[0]}" cy="${p2[1]}" r="4.5" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+          <!-- Right branch: (1, -1) solid to (3, 1) -->
+          <line x1="${p3[0]}" y1="${p3[1]}" x2="${p4[0]}" y2="${p4[1]}" stroke="#0284c7" stroke-width="2.5"/>
+          <circle cx="${p3[0]}" cy="${p3[1]}" r="4.5" fill="#0284c7"/>
+        </svg>
+      `;
+    }
+
+    // Graph for Removable Discontinuity at x = 3 (Q6)
+    function getHoleSvg() {
+      const g = makeGrid(-1, 5, -1, 7, 380, 260);
+      const toPx = (x, y) => [((x - g.xMin)/g.xRange)*g.width, ((g.yMax - y)/g.yRange)*g.height];
+      const p1 = toPx(0, 2), p2 = toPx(3, 5), p3 = toPx(4.5, 6.5);
+      const dot = toPx(3, 2);
+
+      return `
+        <svg class="diagram-svg" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+          ${g.xml}
+          <!-- Parabola/line with hole at (3, 5) -->
+          <line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#0284c7" stroke-width="2.5"/>
+          <line x1="${p2[0]}" y1="${p2[1]}" x2="${p3[0]}" y2="${p3[1]}" stroke="#0284c7" stroke-width="2.5"/>
+          <circle cx="${p2[0]}" cy="${p2[1]}" r="4.5" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+          <!-- Isolated solid point at (3, 2) -->
+          <circle cx="${dot[0]}" cy="${dot[1]}" r="4.5" fill="#0f172a"/>
+        </svg>
+      `;
+    }
+
+    // Graph for Vertical Asymptote at x = -2 (Q7)
+    function getAsympSvg() {
+      const g = makeGrid(-5, 2, -4, 4, 380, 260);
+      const toPx = (x, y) => [((x - g.xMin)/g.xRange)*g.width, ((g.yMax - y)/g.yRange)*g.height];
+      const asympX = toPx(-2, 0)[0];
+
+      return `
+        <svg class="diagram-svg" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+          ${g.xml}
+          <!-- Vertical Asymptote at x = -2 -->
+          <line x1="${asympX}" y1="10" x2="${asympX}" y2="250" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <!-- Left branch plunging to -inf -->
+          <path d="M 40 100 Q 110 130 ${asympX - 5} 250" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+          <!-- Right branch shooting to +inf -->
+          <path d="M ${asympX + 5} 10 Q 200 130 320 120" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+        </svg>
+      `;
+    }
+
+    /* ==========================================================================
+       COMPLETE 14-PROBLEM DATASET (THE LIMIT FOUNDATIONS)
+       ========================================================================== */
+    const PROBLEMS_DATA = [
+      // Q1: Numerical Table Estimation
+      {
+        id: 1,
+        title: "Problem 1",
+        category: "Numerical Table",
+        partsInfo: "3 Steps Required",
+        context: "Estimate the value of \\( \\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2} \\) by analyzing the table of values below:<br>" +
+          "<div class='table-responsive'><table class='limit-table'>" +
+          "<tr><th>x</th><td>1.9</td><td>1.99</td><td>1.999</td><th style='background:#fee2e2;'>2</th><td>2.001</td><td>2.01</td><td>2.1</td></tr>" +
+          "<tr><th>f(x)</th><td>3.9</td><td>3.99</td><td>3.999</td><td style='background:#fee2e2;'>Undefined</td><td>4.001</td><td>4.01</td><td>4.1</td></tr>" +
+          "</table></div>",
+        steps: [
+          {
+            title: "Step 1: Left-Hand Trend (x → 2⁻)",
+            prompt: "As \\( x \\) approaches 2 from the left (1.9, 1.99, 1.999), what integer value is \\( f(x) \\) approaching? <input class='step-input' style='width:60px;' data-ans='4'>",
+            explanation: "The values 3.9, 3.99, 3.999 get closer and closer to 4."
+          },
+          {
+            title: "Step 2: Right-Hand Trend (x → 2⁺)",
+            prompt: "As \\( x \\) approaches 2 from the right (2.1, 2.01, 2.001), what integer value is \\( f(x) \\) approaching? <input class='step-input' style='width:60px;' data-ans='4'>",
+            explanation: "The values 4.1, 4.01, 4.001 get closer and closer to 4."
+          },
+          {
+            title: "Step 3: Estimate Two-Sided Limit",
+            prompt: "Since both sides approach 4, enter the estimated limit value: \\( \\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2} = \\) <input class='step-input' style='width:60px;' data-ans='4'>",
+            explanation: "\\( \\lim_{x \\to 2} \\frac{(x-2)(x+2)}{x-2} = \\lim_{x \\to 2}(x+2) = 4 \\)."
+          }
+        ]
+      },
+      // Q2: Trigonometric Limit Table
+      {
+        id: 2,
+        title: "Problem 2",
+        category: "Numerical Table",
+        partsInfo: "2 Steps Required",
+        context: "Estimate \\( \\lim_{x \\to 0} \\frac{\\sin(3x)}{x} \\) using the values:<br>" +
+          "<div class='table-responsive'><table class='limit-table'>" +
+          "<tr><th>x</th><td>-0.1</td><td>-0.01</td><td>-0.001</td><th style='background:#fee2e2;'>0</th><td>0.001</td><td>0.01</td><td>0.1</td></tr>" +
+          "<tr><th>f(x)</th><td>2.9552</td><td>2.9995</td><td>2.9999</td><td style='background:#fee2e2;'>Undefined</td><td>2.9999</td><td>2.9995</td><td>2.9552</td></tr>" +
+          "</table></div>",
+        steps: [
+          {
+            title: "Step 1: Trend Inspection",
+            prompt: "Notice that as \\( x \\to 0 \\) symmetrically, \\( f(x) \\) approaches what whole number? <input class='step-input' style='width:60px;' data-ans='3'>",
+            explanation: "Both positive and negative values approach 3."
+          },
+          {
+            title: "Step 2: Conclude the Limit",
+            prompt: "Enter the estimated value: \\( \\lim_{x \\to 0} \\frac{\\sin(3x)}{x} = \\) <input class='step-input' style='width:60px;' data-ans='3'>",
+            explanation: "Using the fundamental trigonometric limit \\( \\lim_{u \\to 0} \\frac{\\sin u}{u} = 1 \\), we have \\( 3 \\lim_{x \\to 0} \\frac{\\sin(3x)}{3x} = 3(1) = 3 \\)."
+          }
+        ]
+      },
+      // Q3: Radical Fraction Table
+      {
+        id: 3,
+        title: "Problem 3",
+        category: "Numerical Table",
+        partsInfo: "2 Steps Required",
+        context: "Estimate \\( \\lim_{x \\to 0} \\frac{\\sqrt{x+9} - 3}{x} \\) from the numerical table:<br>" +
+          "<div class='table-responsive'><table class='limit-table'>" +
+          "<tr><th>x</th><td>-0.01</td><td>-0.001</td><th style='background:#fee2e2;'>0</th><td>0.001</td><td>0.01</td></tr>" +
+          "<tr><th>f(x)</th><td>0.1668</td><td>0.1667</td><td style='background:#fee2e2;'>Undefined</td><td>0.1667</td><td>0.1665</td></tr>" +
+          "</table></div>",
+        steps: [
+          {
+            title: "Step 1: Decimal Equivalent to Fraction",
+            prompt: "The decimal value \\( 0.1666... \\) corresponds to which fraction? (e.g. 1/6): <input class='step-input' style='width:70px;' data-ans='1/6' data-alt='0.167|0.1667'>",
+            explanation: "\\( 0.1666... = \\frac{1}{6} \\)."
+          },
+          {
+            title: "Step 2: Conclude Limit Value",
+            prompt: "What is \\( \\lim_{x \\to 0} \\frac{\\sqrt{x+9}-3}{x} \\)? <input class='step-input' style='width:70px;' data-ans='1/6' data-alt='0.167|0.1667'>",
+            explanation: "Multiplying by the conjugate gives \\( \\lim_{x \\to 0} \\frac{1}{\\sqrt{x+9}+3} = \\frac{1}{3+3} = \\frac{1}{6} \\)."
+          }
+        ]
+      },
+      // Q4: Oscillating Behavior Failure
+      {
+        id: 4,
+        title: "Problem 4",
+        category: "DNE Limit",
+        partsInfo: "2 Steps Required",
+        context: "Consider the behavior of \\( f(x) = \\cos(1/x) \\) near \\( x = 0 \\). At \\( x = \\frac{1}{2\\pi n} \\), \\( f(x) = 1 \\); at \\( x = \\frac{1}{(2n+1)\\pi} \\), \\( f(x) = -1 \\).",
+        steps: [
+          {
+            title: "Step 1: Describe the Near-Zero Behavior",
+            prompt: "Does \\( \\cos(1/x) \\) settle to a single number as \\( x \\to 0 \\), or does it oscillate infinitely? Enter 'Oscillate' or 'Settle': <input class='step-input' style='width:110px;' data-ans='Oscillate' data-alt='oscillate'>",
+            explanation: "The values bounce between -1 and 1 with infinite frequency as x approaches 0."
+          },
+          {
+            title: "Step 2: Determine Limit Existence",
+            prompt: "What is the value of \\( \\lim_{x \\to 0} \\cos(1/x) \\)? (Enter 'DNE'): <input class='step-input' style='width:80px;' data-ans='DNE' data-alt='does not exist'>",
+            explanation: "Because the function oscillates infinitely, the limit does not exist (DNE)."
+          }
+        ]
+      },
+      // Q5: Graphical Jump Discontinuity
+      {
+        id: 5,
+        title: "Problem 5",
+        category: "Graphical Limits",
+        partsInfo: "3 Steps Required",
+        context: "Refer to the graph shown below with a break at \\( x = 1 \\).",
+        diagramSVG: getJumpSvg(),
+        steps: [
+          {
+            title: "Step 1: Left-Hand Limit as x → 1⁻",
+            prompt: "Approaching \\( x = 1 \\) from the left along the curve, what \\( y \\)-value is reached at the open circle? <input class='step-input' style='width:60px;' data-ans='2'>",
+            explanation: "The left branch heads toward \\( y = 2 \\)."
+          },
+          {
+            title: "Step 2: Right-Hand Limit as x → 1⁺",
+            prompt: "Approaching \\( x = 1 \\) from the right along the curve, what \\( y \\)-value is reached at the solid point? <input class='step-input' style='width:60px;' data-ans='-1'>",
+            explanation: "The right branch starts at \\( y = -1 \\)."
+          },
+          {
+            title: "Step 3: Two-Sided Limit Evaluation",
+            prompt: "Since \\( \\lim_{x \\to 1^-} f(x) \\neq \\lim_{x \\to 1^+} f(x) \\), enter the value of \\( \\lim_{x \\to 1} f(x) \\): <input class='step-input' style='width:80px;' data-ans='DNE' data-alt='does not exist'>",
+            explanation: "A jump discontinuity causes the two-sided limit to not exist (DNE)."
+          }
+        ]
+      },
+      // Q6: Removable Discontinuity (Hole vs Point)
+      {
+        id: 6,
+        title: "Problem 6",
+        category: "Graphical Limits",
+        partsInfo: "2 Steps Required",
+        context: "Refer to the graph with a hole at \\( (3, 5) \\) and an isolated dot at \\( (3, 2) \\).",
+        diagramSVG: getHoleSvg(),
+        steps: [
+          {
+            title: "Step 1: Function Value f(3)",
+            prompt: "What is the actual function value \\( f(3) \\)? <input class='step-input' style='width:60px;' data-ans='2'>",
+            explanation: "The solid closed dot is at \\( (3, 2) \\), so \\( f(3) = 2 \\)."
+          },
+          {
+            title: "Step 2: Limit Value as x → 3",
+            prompt: "What is \\( \\lim_{x \\to 3} f(x) \\)? <input class='step-input' style='width:60px;' data-ans='5'>",
+            explanation: "Both paths converge to the open hole at \\( y = 5 \\), so \\( \\lim_{x \\to 3} f(x) = 5 \\)."
+          }
+        ]
+      },
+      // Q7: Vertical Asymptote Graph
+      {
+        id: 7,
+        title: "Problem 7",
+        category: "Infinite Limits",
+        partsInfo: "3 Steps Required",
+        context: "Refer to the graph with a vertical asymptote at \\( x = -2 \\).",
+        diagramSVG: getAsympSvg(),
+        steps: [
+          {
+            title: "Step 1: Left-Hand Limit as x → -2⁻",
+            prompt: "As \\( x \\to -2 \\) from the left, the curve plunges downward without bound. Enter the limit: <input class='step-input' style='width:70px;' data-ans='-∞' data-alt='-infinity'>",
+            explanation: "\\( \\lim_{x \\to -2^-} f(x) = -\\infty \\)."
+          },
+          {
+            title: "Step 2: Right-Hand Limit as x → -2⁺",
+            prompt: "As \\( x \\to -2 \\) from the right, the curve shoots upward without bound: <input class='step-input' style='width:70px;' data-ans='∞' data-alt='infinity'>",
+            explanation: "\\( \\lim_{x \\to -2^+} f(x) = +\\infty \\)."
+          },
+          {
+            title: "Step 3: Two-Sided Limit",
+            prompt: "What is \\( \\lim_{x \\to -2} f(x) \\)? (Enter 'DNE'): <input class='step-input' style='width:80px;' data-ans='DNE' data-alt='does not exist'>",
+            explanation: "Because the one-sided limits go to opposite infinities, the limit does not exist (DNE)."
+          }
+        ]
+      },
+      // Q8: Symmetric Vertical Asymptote
+      {
+        id: 8,
+        title: "Problem 8",
+        category: "Infinite Limits",
+        partsInfo: "2 Steps Required",
+        context: "Evaluate \\( \\lim_{x \\to 4} \\frac{1}{(x - 4)^2} \\).",
+        steps: [
+          {
+            title: "Step 1: Sign of the Denominator",
+            prompt: "Since \\( (x - 4)^2 > 0 \\) for all \\( x \\neq 4 \\), do both the left and right sides approach \\( +\\infty \\) or \\( -\\infty \\)? <input class='step-input' style='width:80px;' data-ans='∞' data-alt='+infinity|infinity'>",
+            explanation: "The squared denominator is strictly positive, so the quotient grows infinitely positive."
+          },
+          {
+            title: "Step 2: State the Limit Value",
+            prompt: "Enter \\( \\lim_{x \\to 4} \\frac{1}{(x - 4)^2} = \\) <input class='step-input' style='width:80px;' data-ans='∞' data-alt='infinity|DNE'>",
+            explanation: "Both sides grow to \\( +\\infty \\), so we write \\( \\lim_{x \\to 4} \\frac{1}{(x - 4)^2} = \\infty \\) (or DNE)."
+          }
+        ]
+      },
+      // Q9: Piecewise Limits
+      {
+        id: 9,
+        title: "Problem 9",
+        category: "Piecewise Limits",
+        partsInfo: "3 Steps Required",
+        context: "Let \\( f(x) = \\begin{cases} 2x + 1 & x < 3 \\\\ x^2 - 2 & x \\ge 3 \\end{cases} \\).",
+        steps: [
+          {
+            title: "Step 1: Left Limit as x → 3⁻",
+            prompt: "Evaluate \\( \\lim_{x \\to 3^-} (2x + 1) = 2(3) + 1 = \\) <input class='step-input' style='width:60px;' data-ans='7'>",
+            explanation: "\\( 2(3) + 1 = 7 \\)."
+          },
+          {
+            title: "Step 2: Right Limit as x → 3⁺",
+            prompt: "Evaluate \\( \\lim_{x \\to 3^+} (x^2 - 2) = 3^2 - 2 = \\) <input class='step-input' style='width:60px;' data-ans='7'>",
+            explanation: "\\( 9 - 2 = 7 \\)."
+          },
+          {
+            title: "Step 3: Two-Sided Limit",
+            prompt: "Since left limit equals right limit, what is \\( \\lim_{x \\to 3} f(x) \\)? <input class='step-input' style='width:60px;' data-ans='7'>",
+            explanation: "Both one-sided limits equal 7, so the two-sided limit is 7."
+          }
+        ]
+      },
+      // Q10: Piecewise Function with Discontinuity
+      {
+        id: 10,
+        title: "Problem 10",
+        category: "Piecewise Limits",
+        partsInfo: "3 Steps Required",
+        context: "Let \\( g(x) = \\begin{cases} x^2 + 2 & x \\le 1 \\\\ 5 - x & x > 1 \\end{cases} \\).",
+        steps: [
+          {
+            title: "Step 1: Left Limit as x → 1⁻",
+            prompt: "Evaluate \\( \\lim_{x \\to 1^-} (x^2 + 2) = 1^2 + 2 = \\) <input class='step-input' style='width:60px;' data-ans='3'>",
+            explanation: "\\( 1 + 2 = 3 \\)."
+          },
+          {
+            title: "Step 2: Right Limit as x → 1⁺",
+            prompt: "Evaluate \\( \\lim_{x \\to 1^+} (5 - x) = 5 - 1 = \\) <input class='step-input' style='width:60px;' data-ans='4'>",
+            explanation: "\\( 5 - 1 = 4 \\)."
+          },
+          {
+            title: "Step 3: Two-Sided Limit Conclusion",
+            prompt: "Since 3 ≠ 4, what is \\( \\lim_{x \\to 1} g(x) \\)? <input class='step-input' style='width:80px;' data-ans='DNE' data-alt='does not exist'>",
+            explanation: "The left-hand and right-hand limits differ, so the limit does not exist (DNE)."
+          }
+        ]
+      },
+      // Q11: Absolute Value Ratio Limit
+      {
+        id: 11,
+        title: "Problem 11",
+        category: "Piecewise Limits",
+        partsInfo: "3 Steps Required",
+        context: "Evaluate \\( \\lim_{x \\to 5} \\frac{|x - 5|}{x - 5} \\).",
+        steps: [
+          {
+            title: "Step 1: When x < 5",
+            prompt: "For \\( x < 5 \\), \\( |x - 5| = -(x - 5) \\). Thus \\( \\frac{-(x - 5)}{x - 5} = \\) <input class='step-input' style='width:60px;' data-ans='-1'>",
+            explanation: "The quotient is constant and equals -1 for all x < 5."
+          },
+          {
+            title: "Step 2: When x > 5",
+            prompt: "For \\( x > 5 \\), \\( |x - 5| = x - 5 \\). Thus \\( \\frac{x - 5}{x - 5} = \\) <input class='step-input' style='width:60px;' data-ans='1'>",
+            explanation: "The quotient is constant and equals 1 for all x > 5."
+          },
+          {
+            title: "Step 3: Conclude Two-Sided Limit",
+            prompt: "Since left limit is -1 and right limit is 1, what is \\( \\lim_{x \\to 5} \\frac{|x - 5|}{x - 5} \\)? <input class='step-input' style='width:80px;' data-ans='DNE' data-alt='does not exist'>",
+            explanation: "Because the one-sided limits are not equal, the two-sided limit DNE."
+          }
+        ]
+      },
+      // Q12: Solving for Parameter k
+      {
+        id: 12,
+        title: "Problem 12",
+        category: "Parameters",
+        partsInfo: "3 Steps Required",
+        context: "Find the value of \\( k \\) such that \\( \\lim_{x \\to 2} f(x) \\) exists for: \\[ f(x) = \\begin{cases} k x^2 - 2 & x < 2 \\\\ 3x + 2k & x \\ge 2 \\end{cases} \\]",
+        steps: [
+          {
+            title: "Step 1: Compute Left Limit in Terms of k",
+            prompt: "\\( \\lim_{x \\to 2^-} (k x^2 - 2) = k(2^2) - 2 = a k - 2 \\). What is \\( a \\)? <input class='step-input' style='width:50px;' data-ans='4'>",
+            explanation: "\\( k(4) - 2 = 4k - 2 \\)."
+          },
+          {
+            title: "Step 2: Compute Right Limit in Terms of k",
+            prompt: "\\( \\lim_{x \\to 2^+} (3x + 2k) = 3(2) + 2k = 6 + b k \\). What is \\( b \\)? <input class='step-input' style='width:50px;' data-ans='2'>",
+            explanation: "\\( 6 + 2k \\)."
+          },
+          {
+            title: "Step 3: Equate and Solve for k",
+            prompt: "Set \\( 4k - 2 = 6 + 2k \\implies 2k = 8 \\). Enter \\( k = \\) <input class='step-input' style='width:60px;' data-ans='4'>",
+            explanation: "\\( 4k - 2k = 6 + 2 \\implies 2k = 8 \\implies k = 4 \\)."
+          }
+        ]
+      },
+      // Q13: Solving for Parameter c
+      {
+        id: 13,
+        title: "Problem 13",
+        category: "Parameters",
+        partsInfo: "3 Steps Required",
+        context: "Find the value of \\( c \\) so that \\( \\lim_{x \\to -1} f(x) \\) exists for: \\[ f(x) = \\begin{cases} c x + 5 & x \\le -1 \\\\ x^2 - 3c & x > -1 \\end{cases} \\]",
+        steps: [
+          {
+            title: "Step 1: Evaluate Left Limit",
+            prompt: "\\( \\lim_{x \\to -1^-} (c x + 5) = c(-1) + 5 = -c + 5 \\).",
+            explanation: "Substituting \\( x = -1 \\) gives \\( 5 - c \\)."
+          },
+          {
+            title: "Step 2: Evaluate Right Limit",
+            prompt: "\\( \\lim_{x \\to -1^+} (x^2 - 3c) = (-1)^2 - 3c = k - 3c \\). What is \\( k \\)? <input class='step-input' style='width:50px;' data-ans='1'>",
+            explanation: "\\( (-1)^2 - 3c = 1 - 3c \\)."
+          },
+          {
+            title: "Step 3: Solve for c",
+            prompt: "Set \\( -c + 5 = 1 - 3c \\implies 2c = -4 \\). Enter \\( c = \\) <input class='step-input' style='width:60px;' data-ans='-2'>",
+            explanation: "\\( 3c - c = 1 - 5 \\implies 2c = -4 \\implies c = -2 \\)."
+          }
+        ]
+      },
+      // Q14: Squeeze Theorem Application
+      {
+        id: 14,
+        title: "Problem 14",
+        category: "Squeeze Theorem",
+        partsInfo: "2 Steps Required",
+        context: "Suppose that for all \\( x \\neq 0 \\), the function \\( f(x) \\) is bounded by: \\[ 3 - x^2 \\le f(x) \\le 3 + x^2 \\]",
+        steps: [
+          {
+            title: "Step 1: Evaluate Outer Bounds as x → 0",
+            prompt: "What is \\( \\lim_{x \\to 0} (3 - x^2) = \\lim_{x \\to 0} (3 + x^2) \\)? <input class='step-input' style='width:60px;' data-ans='3'>",
+            explanation: "\\( 3 - 0^2 = 3 \\) and \\( 3 + 0^2 = 3 \\)."
+          },
+          {
+            title: "Step 2: Apply the Squeeze Theorem",
+            prompt: "By the Squeeze Theorem, what is \\( \\lim_{x \\to 0} f(x) \\)? <input class='step-input' style='width:60px;' data-ans='3'>",
+            explanation: "Since the lower and upper bounds both approach 3, the trapped function must also approach 3."
+          }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       FAIL-SAFE PERSISTENCE ENGINE (In-Memory Fallback)
+       ========================================================================== */
+    const STORAGE_KEY = "bma_calc_the_limit_sheet_v1";
+    window._memStore = window._memStore || {};
+
+    const SafeStorage = {
+      isAvailable: () => {
+        try {
+          const test = '__storage_test__';
+          window.localStorage.setItem(test, test);
+          window.localStorage.removeItem(test);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      getItem: (key) => {
+        try {
+          if (SafeStorage.isAvailable()) return window.localStorage.getItem(key);
+        } catch (e) {}
+        return window._memStore[key] || null;
+      },
+      setItem: (key, val) => {
+        try {
+          if (SafeStorage.isAvailable()) {
+            window.localStorage.setItem(key, val);
+            return;
+          }
+        } catch (e) {}
+        window._memStore[key] = String(val);
+      }
+    };
+
+    let activeInputElement = null;
+
+    let state = {
+      currentEmail: null,
+      notesRead: false,
+      currentProblemIdx: 0,
+      isCompleted: false,
+      problems: {}
+    };
+
+    function saveState() {
+      if (!state.currentEmail) return;
+      SafeStorage.setItem(`${STORAGE_KEY}_${state.currentEmail.trim().toLowerCase()}`, JSON.stringify(state));
+      SafeStorage.setItem(`${STORAGE_KEY}_last_active`, state.currentEmail);
+    }
+
+    function loadState(email) {
+      const data = SafeStorage.getItem(`${STORAGE_KEY}_${email.trim().toLowerCase()}`);
+      if (data) {
+        try { 
+          state = { ...state, ...JSON.parse(data), currentEmail: email }; 
+        } catch (e) {
+          state = { currentEmail: email, notesRead: false, currentProblemIdx: 0, isCompleted: false, problems: {} };
+        }
+      } else {
+        state = { currentEmail: email, notesRead: false, currentProblemIdx: 0, isCompleted: false, problems: {} };
+      }
+    }
+
+    function getProblemState(idx) {
+      if (!state.problems[idx]) {
+        state.problems[idx] = { completedSteps: [], inputs: {}, isSolved: false, isSkipped: false };
+      }
+      if (!Array.isArray(state.problems[idx].completedSteps)) {
+        state.problems[idx].completedSteps = [];
+      }
+      if (!state.problems[idx].inputs || typeof state.problems[idx].inputs !== 'object') {
+        state.problems[idx].inputs = {};
+      }
+      return state.problems[idx];
+    }
+
+    function cleanString(s) {
+      return (s || "").toString().trim().toLowerCase()
+        .replace(/\s+/g, '')
+        .replace(/−/g, '-');
+    }
+
+    function testInputMatching(userStr, targetStr, altStr) {
+      const u = cleanString(userStr);
+      const t = cleanString(targetStr);
+      if (!u) return false;
+      if (u === t) return true;
+      if (altStr) {
+        const alts = altStr.split('|').map(cleanString);
+        if (alts.includes(u)) return true;
+      }
+      
+      const parseVal = (str) => {
+        if (str.includes('/')) {
+          const parts = str.split('/');
+          return parts.length === 2 ? parseFloat(parts[0]) / parseFloat(parts[1]) : NaN;
+        }
+        return parseFloat(str);
+      };
+      const numU = parseVal(u);
+      const numT = parseVal(t);
+      if (!isNaN(numU) && !isNaN(numT)) {
+        return Math.abs(numU - numT) < 0.02;
+      }
+      return false;
+    }
+
+    function triggerMathTypeset() {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise().catch((err) => console.warn('MathJax error:', err));
+      }
+    }
+
+    function saveCurrentInputs() {
+      const card = document.querySelector('.problem-card');
+      if (!card) return;
+      const pIdx = state.currentProblemIdx;
+      const pState = getProblemState(pIdx);
+      card.querySelectorAll('.step-input').forEach(inp => {
+        const inputKey = inp.getAttribute('data-key');
+        if (inputKey) {
+          pState.inputs[inputKey] = inp.value;
+        }
+      });
+      saveState();
+    }
+
+    /* ==========================================================================
+       KEYPAD & CALCULATOR HELPERS
+       ========================================================================== */
+    window.trackActiveField = function(element) { activeInputElement = element; };
+    window.insertSymbol = function(sym) {
+      if (!activeInputElement) return;
+      const start = activeInputElement.selectionStart || 0;
+      const end = activeInputElement.selectionEnd || 0;
+      const val = activeInputElement.value;
+      activeInputElement.value = val.substring(0, start) + sym + val.substring(end);
+      activeInputElement.focus();
+      activeInputElement.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    window.clearActiveField = function() {
+      if (!activeInputElement) return;
+      activeInputElement.value = '';
+      activeInputElement.dispatchEvent(new Event('input', { bubbles: true }));
+      activeInputElement.focus();
+    };
+
+    window.switchToolTab = function(tab) {
+      document.getElementById('tabPadBtn').classList.toggle('active', tab === 'pad');
+      document.getElementById('tabCalcBtn').classList.toggle('active', tab === 'calc');
+      document.getElementById('mathPadView').style.display = tab === 'pad' ? 'grid' : 'none';
+      document.getElementById('calcView').style.display = tab === 'calc' ? 'block' : 'none';
+    };
+
+    let calcExpression = "";
+    window.calcAppend = function(val) {
+      calcExpression += val;
+      document.getElementById('calcScreen').textContent = calcExpression || "0";
+    };
+    window.calcClear = function() {
+      calcExpression = "";
+      document.getElementById('calcScreen').textContent = "0";
+    };
+    window.calcSqrt = function() {
+      try {
+        const res = Math.sqrt(eval(calcExpression || "0"));
+        calcExpression = String(res);
+        document.getElementById('calcScreen').textContent = calcExpression;
+      } catch(e) { document.getElementById('calcScreen').textContent = "Error"; }
+    };
+    window.calcEval = function() {
+      try {
+        const res = eval(calcExpression || "0");
+        calcExpression = String(res);
+        document.getElementById('calcScreen').textContent = calcExpression;
+      } catch(e) { document.getElementById('calcScreen').textContent = "Error"; }
+    };
+    window.calcInsertToField = function() {
+      if (!activeInputElement || !calcExpression) return;
+      insertSymbol(calcExpression);
+    };
+
+    /* ==========================================================================
+       ROUTER & NAVIGATION CONTROLS
+       ========================================================================== */
+    const loginForm = document.getElementById('loginForm');
+    const studentEmailInput = document.getElementById('studentEmail');
+
+    function handleLogin(email, targetView = 'notes') {
+      const cleanName = email.trim() || 'Student';
+      loadState(cleanName);
+      state.currentEmail = cleanName;
+      saveState();
+      if (targetView === 'sheet') {
+        renderProblem(state.currentProblemIdx || 0);
+        showView('sheet');
+      } else {
+        showView('notes');
+        triggerMathTypeset();
+      }
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleLogin(studentEmailInput.value, 'notes');
+    });
+
+    document.getElementById('startDirectQuizBtn').addEventListener('click', () => {
+      handleLogin(studentEmailInput.value, 'sheet');
+    });
+
+    document.getElementById('confirmNotesReadBtn').addEventListener('click', () => {
+      state.notesRead = true;
+      saveState();
+      renderProblem(state.currentProblemIdx || 0);
+      showView('sheet');
+    });
+
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (targetBtn) targetBtn.classList.add('active');
+
+      saveCurrentInputs();
+      if (tabId === 'theory') {
+        showView('notes');
+        triggerMathTypeset();
+      } else if (tabId === 'sheet') {
+        renderProblem(state.currentProblemIdx || 0);
+        showView('sheet');
+      } else if (tabId === 'graphLab') {
+        showView('graphLab');
+        initDesmosLab();
+      } else if (tabId === 'solutions') {
+        renderSolutions();
+        showView('solutions');
+      }
+    }
+
+    document.getElementById('switchUserBtn').addEventListener('click', () => {
+      saveCurrentInputs();
+      state.currentEmail = null;
+      showView('login');
+    });
+
+    document.getElementById('soundToggleBtn').addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+    });
+
+    function showView(v) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(`${v}View`);
+      if (target) target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector('header .nav-tabs').style.display = state.currentEmail ? 'flex' : 'none';
+      document.querySelector('header .user-actions').style.display = state.currentEmail ? 'flex' : 'none';
+      if (state.currentEmail) document.getElementById('userEmailSpan').textContent = state.currentEmail;
+    }
+
+    /* ==========================================================================
+       PROGRESSIVE STEP-BY-STEP RENDERER
+       ========================================================================== */
+    function renderProblem(idx) {
+      if (idx < 0 || idx >= PROBLEMS_DATA.length) return;
+      state.currentProblemIdx = idx;
+      const prob = PROBLEMS_DATA[idx];
+      const pState = getProblemState(idx);
+
+      document.getElementById('pNumberDisplay').textContent = `${prob.title}`;
+      document.getElementById('pCategoryBadge').textContent = prob.category;
+      document.getElementById('pPartsBadge').textContent = prob.partsInfo;
+      document.getElementById('pContextDisplay').innerHTML = prob.context;
+
+      const diagramBox = document.getElementById('diagramDisplayContainer');
+      if (prob.diagramSVG) {
+        diagramBox.style.display = 'flex';
+        diagramBox.innerHTML = prob.diagramSVG;
+      } else {
+        diagramBox.style.display = 'none';
+        diagramBox.innerHTML = '';
+      }
+
+      const badge = document.getElementById('pStatusBadge');
+      if (pState.isSolved) { badge.className = 'status-badge badge-complete'; badge.textContent = 'Completed'; }
+      else if (pState.isSkipped) { badge.className = 'status-badge badge-skipped'; badge.textContent = 'Skipped'; }
+      else if (pState.completedSteps.length > 0) { badge.className = 'status-badge badge-progress'; badge.textContent = 'In Progress'; }
+      else { badge.className = 'status-badge badge-unvisited'; badge.textContent = 'Unvisited'; }
+
+      const container = document.getElementById('stepsListContainer');
+      container.innerHTML = '';
+
+      const completedCount = pState.completedSteps.length;
+      const maxStepToRender = pState.isSolved ? prob.steps.length - 1 : Math.min(completedCount, prob.steps.length - 1);
+
+      for (let sIdx = 0; sIdx <= maxStepToRender; sIdx++) {
+        const step = prob.steps[sIdx];
+        const isDone = pState.completedSteps.includes(sIdx);
+
+        const card = document.createElement('div');
+        card.id = `step-card-${idx}-${sIdx}`;
+        card.className = `step-card ${isDone ? 'completed' : 'active'}`;
+
+        card.innerHTML = `
+          <div class="step-header-bar">
+            <div class="step-title-text">${step.title}</div>
+            <span class="step-status-indicator">${isDone ? '✓ Completed' : 'Active Step'}</span>
+          </div>
+          <div class="step-prompt">${step.prompt}</div>
+          <div class="step-controls">
+            <div>
+              ${sIdx > 0 ? `<button class="btn btn-step-back" onclick="focusStepCard(${idx}, ${sIdx-1})">← Back to Step ${sIdx}</button>` : ''}
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="step-feedback-msg" id="step-msg-${idx}-${sIdx}"></span>
+              ${!isDone ? `
+                <button class="btn btn-step-check" id="btn-verify-${idx}-${sIdx}" onclick="verifyStepAnswers(${idx}, ${sIdx})">
+                  ${sIdx === prob.steps.length - 1 ? 'Verify & Finish Question ✓' : 'Verify & Reveal Next Step →'}
+                </button>
+              ` : '<span style="color:var(--correct-green); font-weight:700;">✓ Step Verified</span>'}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+
+        card.querySelectorAll('.step-input').forEach((inp, iIdx) => {
+          const inputKey = `p${idx}_s${sIdx}_i${iIdx}`;
+          inp.setAttribute('data-key', inputKey);
+          inp.setAttribute('onfocus', 'trackActiveField(this)');
+          
+          if (pState.inputs[inputKey] !== undefined) {
+            inp.value = pState.inputs[inputKey];
+          }
+
+          if (isDone) {
+            inp.disabled = true;
+            inp.classList.add('input-correct');
+          } else {
+            inp.disabled = false;
+            inp.addEventListener('input', (e) => {
+              pState.inputs[inputKey] = e.target.value;
+              saveState();
+            });
+            inp.addEventListener('keypress', (e) => {
+              if (e.key === 'Enter') verifyStepAnswers(idx, sIdx);
+            });
+          }
+        });
+      }
+
+      document.getElementById('prevProblemBtn').disabled = idx === 0;
+      document.getElementById('nextProblemBtn').disabled = idx === PROBLEMS_DATA.length - 1;
+      renderPaletteGrid();
+      saveState();
+      triggerMathTypeset();
+    }
+
+    window.verifyStepAnswers = function(pIdx, sIdx) {
+      const prob = PROBLEMS_DATA[pIdx];
+      const pState = getProblemState(pIdx);
+      const card = document.getElementById(`step-card-${pIdx}-${sIdx}`);
+      if (!card) return;
+      const inputs = card.querySelectorAll('.step-input');
+      let ok = true;
+
+      inputs.forEach((inp) => {
+        const ans = inp.getAttribute('data-ans') || '';
+        const alt = inp.getAttribute('data-alt') || '';
+        const inputKey = inp.getAttribute('data-key');
+        pState.inputs[inputKey] = inp.value;
+
+        if (testInputMatching(inp.value, ans, alt)) {
+          inp.classList.remove('input-incorrect');
+          inp.classList.add('input-correct');
+        } else {
+          inp.classList.remove('input-correct');
+          inp.classList.add('input-incorrect');
+          ok = false;
+        }
+      });
+
+      const msg = document.getElementById(`step-msg-${pIdx}-${sIdx}`);
+      if (ok) {
+        playSound('correct');
+        if (!pState.completedSteps.includes(sIdx)) pState.completedSteps.push(sIdx);
+        pState.isSkipped = false;
+        if (msg) {
+          msg.className = "step-feedback-msg correct";
+          msg.textContent = "✓ Correct Step Verification!";
+        }
+
+        if (pState.completedSteps.length === prob.steps.length) {
+          pState.isSolved = true;
+          saveState();
+          setTimeout(() => {
+            if (pIdx === PROBLEMS_DATA.length - 1) playSound('fanfare');
+            renderProblem(pIdx);
+          }, 350);
+        } else {
+          saveState();
+          setTimeout(() => {
+            renderProblem(pIdx);
+            focusStepCard(pIdx, sIdx + 1);
+          }, 300);
+        }
+      } else {
+        playSound('incorrect');
+        if (msg) {
+          msg.className = "step-feedback-msg incorrect";
+          msg.textContent = "✗ Calculation mismatch in highlighted box.";
+        }
+      }
+    };
+
+    window.focusStepCard = function(pIdx, sIdx) {
+      const target = document.getElementById(`step-card-${pIdx}-${sIdx}`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const field = target.querySelector('.step-input');
+        if (field && !field.disabled) field.focus();
+      }
+    };
+
+    document.getElementById('skipProblemBtn').addEventListener('click', () => {
+      saveCurrentInputs();
+      const pState = getProblemState(state.currentProblemIdx);
+      pState.isSkipped = true;
+      saveState();
+      if (state.currentProblemIdx < PROBLEMS_DATA.length - 1) renderProblem(state.currentProblemIdx + 1);
+      else renderProblem(state.currentProblemIdx);
+    });
+
+    document.getElementById('prevProblemBtn').addEventListener('click', () => {
+      saveCurrentInputs();
+      if (state.currentProblemIdx > 0) renderProblem(state.currentProblemIdx - 1);
+    });
+
+    document.getElementById('nextProblemBtn').addEventListener('click', () => {
+      saveCurrentInputs();
+      if (state.currentProblemIdx < PROBLEMS_DATA.length - 1) renderProblem(state.currentProblemIdx + 1);
+    });
+
+    function renderPaletteGrid() {
+      const grid = document.getElementById('paletteGridContainer');
+      grid.innerHTML = '';
+      let solvedCount = 0;
+
+      PROBLEMS_DATA.forEach((p, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'palette-btn';
+        btn.textContent = idx + 1;
+        const ps = state.problems[idx];
+        if (ps) {
+          if (ps.isSolved) { btn.classList.add('completed'); solvedCount++; }
+          else if (ps.isSkipped) btn.classList.add('skipped');
+          else if (Array.isArray(ps.completedSteps) && ps.completedSteps.length > 0) btn.classList.add('progress');
+        }
+        if (idx === state.currentProblemIdx) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          saveCurrentInputs();
+          renderProblem(idx);
+        });
+        grid.appendChild(btn);
+      });
+      document.getElementById('completionRateText').textContent = `${solvedCount}/${PROBLEMS_DATA.length} Solved`;
+    }
+
+    const confirmModal = document.getElementById('confirmModal');
+    document.getElementById('finishAssessmentBtn').addEventListener('click', () => {
+      saveCurrentInputs();
+      confirmModal.classList.add('active');
+    });
+    document.getElementById('cancelModalBtn').addEventListener('click', () => confirmModal.classList.remove('active'));
+    document.getElementById('confirmSubmitModalBtn').addEventListener('click', () => {
+      confirmModal.classList.remove('active');
+      state.isCompleted = true;
+      saveState();
+      playSound('fanfare');
+      renderSolutions();
+      showView('solutions');
+    });
+
+    function renderSolutions() {
+      let solved = 0, skipped = 0;
+      PROBLEMS_DATA.forEach((p, idx) => {
+        const ps = state.problems[idx];
+        if (ps && ps.isSolved) solved++;
+        else if (ps && ps.isSkipped) skipped++;
+      });
+      const total = PROBLEMS_DATA.length;
+      document.getElementById('finalScoreVal').textContent = solved;
+      document.getElementById('accuracyStat').textContent = `${Math.round((solved/total)*100)}%`;
+      document.getElementById('correctCountStat').textContent = solved;
+      document.getElementById('skippedCountStat').textContent = skipped;
+
+      const desc = document.getElementById('performanceFeedbackDesc');
+      desc.textContent = solved === total 
+        ? "🌟 Flawless mastery! You solved all 14 problems of The Limit worksheet perfectly." 
+        : "Review the complete step rationales below to polish your limits and continuity skills.";
+
+      const reviewContainer = document.getElementById('reviewListContainer');
+      reviewContainer.innerHTML = '';
+
+      PROBLEMS_DATA.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        let stepsHTML = prob.steps.map(st => `
+          <div style="margin-top:10px; padding:12px; background:#f0f9ff; border-left:3px solid var(--primary-blue); border-radius:4px; border:1px solid var(--blue-border-soft); border-left-width:3px;">
+            <strong style="color:var(--primary-dark); font-size:0.95rem;">${st.title}</strong>
+            <p style="margin-top:4px; font-size:0.95rem; color:#0c4a6e;">${st.explanation}</p>
+          </div>
+        `).join('');
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <strong style="color:var(--primary-dark); font-size:1.1rem;">${prob.title} (${prob.category})</strong>
+            <span class="status-badge ${state.problems[prob.id - 1]?.isSolved ? 'badge-complete' : 'badge-skipped'}">
+              ${state.problems[prob.id - 1]?.isSolved ? 'Solved' : 'Skipped/Incomplete'}
+            </span>
+          </div>
+          <div style="font-size:1.05rem; margin-bottom:0.5rem;">${prob.context}</div>
+          ${stepsHTML}
+        `;
+        reviewContainer.appendChild(card);
+      });
+      triggerMathTypeset();
+    }
+
+    document.getElementById('retakeQuizBtn').addEventListener('click', () => {
+      if (confirm("Reset current worksheet parameters and restart?")) {
+        state.problems = {};
+        state.currentProblemIdx = 0;
+        state.isCompleted = false;
+        saveState();
+        renderProblem(0);
+        showView('sheet');
+      }
+    });
+
+    let desmosLabCalc = null;
+    function initDesmosLab() {
+      if (desmosLabCalc) return;
+      const elt = document.getElementById('desmosLab');
+      if (!elt) return;
+      desmosLabCalc = Desmos.GraphingCalculator(elt, { keypad: true });
+      desmosLabCalc.setMathBounds({ left: -6, right: 6, bottom: -4, top: 8 });
+      // Preload piecewise example
+      desmosLabCalc.setExpression({ id: 'f1', latex: 'y = 2x + 1 \\left\\{x < 3\\right\\}', color: '#0284c7' });
+      desmosLabCalc.setExpression({ id: 'f2', latex: 'y = x^2 - 2 \\left\\{x \\ge 3\\right\\}', color: '#0284c7' });
+      desmosLabCalc.setExpression({ id: 'pt1', latex: '(3, 7)', color: '#0c4a6e', label: 'lim x->3 f(x)=7', showLabel: true });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const last = SafeStorage.getItem(`${STORAGE_KEY}_last_active`);
+      if (last && studentEmailInput) studentEmailInput.value = last;
+      triggerMathTypeset();
+    });
+  </script>
+</body>
+</html>
